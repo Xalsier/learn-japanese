@@ -1,0 +1,15 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0; /* Remove the margin to allow full viewport alignment */
+    height: 100vh; /* Set the height of the body to the full viewport height */
+    display: flex; /* Use flexbox to create a flex container */
+    flex-direction: column; /* Arrange children in a column */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    text-align: center; /* Ensure text is centered within the container */
+}
+
+#kana-character {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
