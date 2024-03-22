@@ -4,9 +4,21 @@
     <link href="style.css" type="text/css" rel="stylesheet">
 </head>
 <body>
-    <div id="kana-character"></div> 
-    <input type="text" id="user-input">
+    <div id="kana-character"></div>
+    <div id="input-row">
+        <input type="text" id="user-input">
+        <select id="library-select" style="display: none;">
+            <!-- Add more options here as needed -->
+        </select>
+    </div>
     <p id="score"></p>
+    <p id="alert"></p>
+    <script src="library.js"></script>
+    <script src="fonts.js"></script>
     <script src="script.js"></script>
+    <nav>
+        <a href="index.html">Kana</a> |
+        <a href="card.html">Cards</a>
+    </nav>
 </body>
 </html>
