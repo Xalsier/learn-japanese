@@ -13,3 +13,85 @@ body {
     font-size: 80px;
     margin-bottom: 20px;
 }
+
+#input-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px; /* Space between input and select */
+}
+
+input, select {
+    padding: 10px;
+    font-size: 16px;
+    margin: 10px 0; /* Spacing for better touch accessibility */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 600px) {
+    #kana-character {
+        font-size: 60px; /* Smaller font size for small screens */
+    }
+    input, select {
+        font-size: 14px; /* Smaller font size for easier reading */
+    }
+}
+
+.card-container {
+    perspective: 1000px;
+}
+
+.card {
+    width: 300px;
+    height: 200px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+}
+
+.front, .back {
+    position: absolute;
+    backface-visibility: hidden;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    color: white;
+    background-color: #000000;
+}
+
+.vocabulary-word, .reading, .highlight, #english-readings {
+    color: yellow;
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+.card-container.flipped .card {
+    transform: rotateY(180deg);
+}
+
+.interactive-word {
+    color: gold;
+    cursor: pointer;
+}
+
+.current-word {
+    color: yellow;
+}
+
+.related-word {
+    color: orange;
+}
+
+.highlight-yellow {
+    color: yellow;
+}
+
+.highlight-orange {
+    color: orange;
+}
+
