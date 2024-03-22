@@ -1,64 +1,50 @@
-const hiragana = ['あ', 'い', 'う', 'え', 'お']; // Add the rest of the hiragana characters
-const katakana = ['ア', 'イ', 'ウ', 'エ', 'オ']; // Add the rest of the katakana characters
-
-const library = {
-    "hiragana": {
-        'あ': 'a',
-        'い': 'i',
-        'う': 'u',
-        'え': 'e',
-        'お': 'o'
-    },
-    "katakana": {
-        'ア': 'a',
-        'イ': 'i',
-        'ウ': 'u',
-        'エ': 'e',
-        'オ': 'o'
-    }
-};
-
 let currentCharacter;
-let currentType = 'hiragana'; // Start with hiragana
+let currentRomaji;
+let currentTypeIndex = 0; // 0 for hiragana, 1 for katakana
 let score = 0;
 let total = 0;
-const fonts = ['Arial', 'Verdana', 'Courier', 'Times New Roman', 'Georgia']; // Example fonts
+const correctAnswers = new Map(); // Store correct answers
 
 const kanaCharacterElement = document.getElementById('kana-character');
 const userInputElement = document.getElementById('user-input');
+const librarySelectElement = document.getElementById('library-select');
 const scoreElement = document.getElementById('score');
+const alertElement = document.getElementById('alert');
 
 function displayNewCharacter() {
-    // Randomly select the type (hiragana or katakana)
-    currentType = Math.random() > 0.5 ? 'hiragana' : 'katakana';
+    currentTypeIndex = Math.floor(Math.random() * window.library.length);
+    const kanaSet = window.library[currentTypeIndex].kana.filter(kana => !correctAnswers.has(kana));
 
-    const characterArray = currentType === 'hiragana' ? hiragana : katakana;
-    const randomIndex = Math.floor(Math.random() * characterArray.length);
-    currentCharacter = characterArray[randomIndex];
+    if (kanaSet.length === 0) {
+        alertElement.textContent = 'No kana left. Refresh to start again.';
+        userInputElement.disabled = true; // Disable input if no kana left
+        return;
+    }
 
-    // Apply a random font to the kana character
-    const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
+    const randomIndex = Math.floor(Math.random() * kanaSet.length);
+    currentCharacter = kanaSet[randomIndex];
+    currentRomaji = window.library[currentTypeIndex].romaji[window.library[currentTypeIndex].kana.indexOf(currentCharacter)];
+
+    const randomFont = window.fonts[Math.floor(Math.random() * window.fonts.length)];
     kanaCharacterElement.style.fontFamily = randomFont;
+
+    const rotationDegrees = Math.floor(Math.random() * 10);
+    kanaCharacterElement.style.transform = `rotate(${rotationDegrees}deg)`;
 
     kanaCharacterElement.textContent = currentCharacter;
     userInputElement.value = ''; // Clear the input field
 }
 
-function convertToRomaji(kana) {
-    return library[currentType][kana];
-}
-
 function checkAnswer() {
     const userInput = userInputElement.value.toLowerCase();
-    const correctRomaji = convertToRomaji(currentCharacter);
-
     total++; // Increment total when the answer is checked
 
-    if (userInput === correctRomaji) {
+    if (userInput === currentRomaji) {
         score++;
-        alert('Correct!');
+        alertElement.textContent = 'Correct!';
+        updateLibrarySelect(currentCharacter, currentRomaji);
     } else {
-        alert(`Incorrect. The answer was ${correctRomaji}`);
+        alertElement.textContent = `Incorrect. The answer for ${currentCharacter} was ${currentRomaji}`;
     }
 
     displayNewCharacter();
@@ -66,7 +52,20 @@ function checkAnswer() {
 }
 
 function updateScore() {
-    scoreElement.textContent = `${score}/${total} correct`;
+    const totalKana = window.library.reduce((sum, item) => sum + item.kana.length, 0);
+    const accuracy = total > 0 ? (score / total * 100).toFixed(2) : 0; // Calculate accuracy percentage
+    scoreElement.textContent = `Kana: `+ score +`/` + totalKana +` - Accuracy: ${accuracy}%`;
+}
+
+function updateLibrarySelect(kana, romaji) {
+    if (!correctAnswers.has(kana)) {
+        correctAnswers.set(kana, romaji);
+        const optionElement = document.createElement('option');
+        optionElement.value = kana;
+        optionElement.textContent = `${kana} (${romaji})`;
+        librarySelectElement.appendChild(optionElement);
+        librarySelectElement.style.display = 'inline-block'; // Show the select when it has items
+    }
 }
 
 userInputElement.addEventListener('keyup', (event) => {
@@ -77,3 +76,4 @@ userInputElement.addEventListener('keyup', (event) => {
 
 displayNewCharacter();
 updateScore();
+
