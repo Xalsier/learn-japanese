@@ -6,14 +6,7 @@
 </head>
 <body>
 
-    <!-- Select box for choosing between Kanji and 日本 -->
-    <select id="wordSelect">
-        <option value="kanji" selected>漢字</option>
-        <option value="nihon">日本</option>
-        <option value="nihongo">日本語</option>
-        <option value="benkyou">勉強</option>
-        <option value="renshuu">練習</option>
-    </select>
+    <select id="wordSelect"></select>
 
     <div class="card-container" onclick="flipCard()">
         <div class="card">
@@ -35,9 +28,10 @@
     </div>
 
     <br>
-
+    <script src="cardLib.js"></script>
     <nav>
         <a href="index.html">Kana</a> |
+        <a href="katohi.html">Kana 2</a> |
         <a href="card.html">Cards</a>
     </nav>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
